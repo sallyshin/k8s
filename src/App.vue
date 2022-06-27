@@ -8,7 +8,7 @@
       <Items :items="items" @edit-item="editItem" @delete-item='deleteItem' />
     </div>
     <div v-show="!isFormShown" style="margin-top: 30px;">
-      <button class="btn" style="display: block; background-color: orange; margin: auto; ">목록 더 보여주기</button>
+      <button class="btn" style="display: block; background-color: orange; margin: auto; ">MORE</button>
     </div>
   </div>
 </template>
