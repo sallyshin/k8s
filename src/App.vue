@@ -78,6 +78,20 @@ export default {
         is_banned: false
       },
       {
+        nation_cd: 'kor',
+        item_cd: 'kor-2',
+        item_nm: '품목01',
+        region_cd: 'ap-northeast-2',
+        cat_mst_cd: 'electronic',
+        cat_mst_nm: '전자제품',
+        cat_dtl_cd: 'tv',
+        cat_dtl_nm: 'TV',
+        company_nm: 'company',
+        imported_from: 'china',
+        quantity: 3,
+        is_banned: false
+      },
+      {
         nation_cd: 'usa',
         item_cd: 'usa-1',
         item_nm: '품목02',
