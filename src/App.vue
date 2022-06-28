@@ -1,14 +1,20 @@
 <template>
-  <div class="container">
+  <div class="container" v-cloak>
     <Header title="물품 목록" @change-mode="changeMode" :isFormShown="isFormShown" />
     <div v-show="isFormShown">
       <ItemForm @add-item="addItem" />
     </div>
-    <div v-show="!isFormShown">
+    <div id="items" v-show="!isFormShown">
       <Items :items="items" @edit-item="editItem" @delete-item='deleteItem' />
     </div>
-    <div v-show="!isFormShown" style="margin-top: 30px;">
-      <button class="btn" style="display: block; background-color: orange; margin: auto; ">MORE</button>
+    <div id="footer" v-show="!isFormShown" style="margin-top: 30px;">
+      <div v-if="areItemsLoaded">
+        <button class="btn" style="display: block; background-color: orange; margin: auto;"
+          v-on:click="loadItems">MORE</button>
+      </div>
+      <div v-else>
+        <img src="./assets/loading.gif" alt="Loading..." style="display: block; margin: auto; width: 30%; height: 30%;">
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +35,7 @@ export default {
     return {
       items: [],
       isFormShown: false,
+      areItemsLoaded: false,
       startFrom: 0,
       endAt: 0,
       rowSize: 10
@@ -37,6 +44,71 @@ export default {
   methods: {
     changeMode() {
       this.isFormShown = !this.isFormShown
+    },
+    loadItems() {
+      this.areItemsLoaded = false
+      setTimeout(() => {
+        this.items.push(
+          {
+            nation_cd: 'KR',
+            item_cd: 'KR-1',
+            item_nm: '품목01',
+            region_cd: 'ap-northeast-2',
+            cat_mst_cd: 'electronic',
+            cat_mst_nm: '전자제품',
+            cat_dtl_cd: 'tv',
+            cat_dtl_nm: 'TV',
+            company_nm: 'company',
+            imported_from: 'CN',
+            quantity: 3,
+            is_banned: false
+          },
+          {
+            nation_cd: 'KR',
+            item_cd: 'KR-2',
+            item_nm: '품목01',
+            region_cd: 'ap-northeast-2',
+            cat_mst_cd: 'electronic',
+            cat_mst_nm: '전자제품',
+            cat_dtl_cd: 'tv',
+            cat_dtl_nm: 'TV',
+            company_nm: 'company',
+            imported_from: 'CN',
+            quantity: 3,
+            is_banned: false
+          },
+          {
+            nation_cd: 'US',
+            item_cd: 'US-1',
+            item_nm: '품목02',
+            region_cd: 'us-west-1',
+            cat_mst_cd: 'electronic',
+            cat_mst_nm: '전자제품',
+            cat_dtl_cd: 'tv',
+            cat_dtl_nm: 'TV',
+            company_nm: 'company',
+            imported_from: 'CN',
+            quantity: 3,
+            is_banned: false
+          },
+          {
+            nation_cd: 'EG',
+            item_cd: 'EG-1',
+            item_nm: '품목03',
+            region_cd: 'me-south-1',
+            cat_mst_cd: 'meat',
+            cat_mst_nm: '전자제품',
+            cat_dtl_cd: 'pork',
+            cat_dtl_nm: '돼지고기',
+            company_nm: 'company',
+            imported_from: 'AU',
+            quantity: 3,
+            is_banned: true
+          }
+        )
+        this.areItemsLoaded = true
+      }, 3000);
+
     },
     addItem(item) {
       console.log(item)
@@ -55,6 +127,9 @@ export default {
       // 성공 시 화면에서 삭제
       if (confirm(`물품번호 [${item_cd}] 을(를) 삭제할까요?`)) {
         // DB 과정
+
+        // 다시 로드하기
+        // 아래는 임시임...
         this.items = this.items.filter((item, index, array) => {
           return item.item_cd !== item_cd
         })
@@ -62,64 +137,7 @@ export default {
     }
   },
   created() {
-    this.items = [
-      {
-        nation_cd: 'kor',
-        item_cd: 'kor-1',
-        item_nm: '품목01',
-        region_cd: 'ap-northeast-2',
-        cat_mst_cd: 'electronic',
-        cat_mst_nm: '전자제품',
-        cat_dtl_cd: 'tv',
-        cat_dtl_nm: 'TV',
-        company_nm: 'company',
-        imported_from: 'china',
-        quantity: 3,
-        is_banned: false
-      },
-      {
-        nation_cd: 'kor',
-        item_cd: 'kor-2',
-        item_nm: '품목01',
-        region_cd: 'ap-northeast-2',
-        cat_mst_cd: 'electronic',
-        cat_mst_nm: '전자제품',
-        cat_dtl_cd: 'tv',
-        cat_dtl_nm: 'TV',
-        company_nm: 'company',
-        imported_from: 'china',
-        quantity: 3,
-        is_banned: false
-      },
-      {
-        nation_cd: 'usa',
-        item_cd: 'usa-1',
-        item_nm: '품목02',
-        region_cd: 'us-west-1',
-        cat_mst_cd: 'electronic',
-        cat_mst_nm: '전자제품',
-        cat_dtl_cd: 'tv',
-        cat_dtl_nm: 'TV',
-        company_nm: 'company',
-        imported_from: 'china',
-        quantity: 3,
-        is_banned: false
-      },
-      {
-        nation_cd: 'egy',
-        item_cd: 'egy-1',
-        item_nm: '품목03',
-        region_cd: 'me-south-1',
-        cat_mst_cd: 'meat',
-        cat_mst_nm: '전자제품',
-        cat_dtl_cd: 'pork',
-        cat_dtl_nm: '돼지고기',
-        company_nm: 'company',
-        imported_from: 'australia',
-        quantity: 3,
-        is_banned: true
-      }
-    ]
+    this.loadItems()
   }
 }
 </script>
@@ -194,6 +212,10 @@ export default {
 
 body {
   font-family: 'Poppins', sans-serif;
+}
+
+[v-cloak] {
+  display: none;
 }
 
 .container {
